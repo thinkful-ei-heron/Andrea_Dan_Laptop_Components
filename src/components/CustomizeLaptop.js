@@ -1,4 +1,5 @@
 import React from 'react';
+import CustomizableFeatures from './CustomizableFeatures';
 
 // Normalizes string as a slug - a string that is safe to use
 // in both URLs and html attributes
@@ -12,8 +13,22 @@ export default class CustomizeLaptop extends React.Component {
       const featureHash = feature + '-' + idx;
       const options = this.props.features[feature].map(item => {
         const itemHash = slugify(JSON.stringify(item));
-
+        console.log('in customizeLaptop itemHash is ' + itemHash);
         return (
+          <CustomizableFeatures
+            key={itemHash}
+            id={itemHash}
+            name={slugify(feature)}
+            feature={feature}
+            item={item}
+            itemName={item.name}
+            cost={item.cost}
+            checked={item.name === this.props.state.selected[feature].name}
+            updateFeature={this.props.updateFeature}
+            currencyFormat={this.props.currencyFormat}
+          />
+        );
+        /*
           <div key={itemHash} className="feature__item">
             <input
               type="radio"
@@ -28,6 +43,7 @@ export default class CustomizeLaptop extends React.Component {
             </label>
           </div>
         );
+        */
       });
 
       return (
@@ -40,6 +56,11 @@ export default class CustomizeLaptop extends React.Component {
       );
     });
 
-    return features;
+    return (
+      <form className="main__form">
+        <h2>Customize your laptop</h2>
+        {features}
+      </form>
+    );
   }
 }

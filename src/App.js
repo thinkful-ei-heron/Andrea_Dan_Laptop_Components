@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import slugify from 'slugify';
 
 import CustomizeLaptop from './components/CustomizeLaptop';
-import Cart from './components/Cart';
+import CartItems from './components/CartItems';
 
 import './App.css';
 
@@ -39,31 +39,33 @@ class App extends Component {
   };
 
   updateFeature = (feature, newValue) => {
+    console.log('updateFeature called');
     const selected = Object.assign({}, this.state.selected);
     selected[feature] = newValue;
     this.setState({
       selected
     });
   };
- render() {
-  const summary = Object.keys(this.state.selected).map((feature, idx) => {
-    const featureHash = feature + '-' + idx;
-    const selectedOption = this.state.selected[feature];
+  render() {
+    const summary = Object.keys(this.state.selected).map((feature, idx) => {
+      const featureHash = feature + '-' + idx;
+      const selectedOption = this.state.selected[feature];
 
-    return (
-      <Cart 
-            featureHash={featureHash}
-            feature= {feature}
-            name={selectedOption.name}
-            USCurrency= {USCurrencyFormat}
-            cost= {selectedOption.cost}
-
-            />
-    );
-  });
+      return (
+        <CartItems
+          featureHash={featureHash}
+          feature={feature}
+          name={selectedOption.name}
+          USCurrency={USCurrencyFormat}
+          cost={selectedOption.cost}
+        />
+      );
+    });
 
     const total = Object.keys(this.state.selected).reduce(
-    (acc, curr) => acc + this.state.selected[curr].cost,0);
+      (acc, curr) => acc + this.state.selected[curr].cost,
+      0
+    );
 
     //Main Form w/Customize Laptop
     return (
@@ -72,15 +74,12 @@ class App extends Component {
           <h1>ELF Computing | Laptops</h1>
         </header>
         <main>
-          <form className="main__form">
-            <h2>Customize your laptop</h2>
-            <CustomizeLaptop
-              features={this.props.features}
-              state={this.state}
-              currencyFormat={USCurrencyFormat}
-              updateFeature={this.updateFeature}
-            />
-          </form>
+          <CustomizeLaptop
+            features={this.props.features}
+            state={this.state}
+            currencyFormat={USCurrencyFormat}
+            updateFeature={this.updateFeature}
+          />
           <section className="main__summary">
             <h2>Your cart</h2>
             {summary}
