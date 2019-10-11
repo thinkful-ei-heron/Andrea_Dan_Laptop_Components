@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 
 // Normalizes string as a slug - a string that is safe to use
 // in both URLs and html attributes
-import slugify from 'slugify';
 
 import CustomizeLaptop from './components/CustomizeLaptop';
-import CartItems from './components/CartItems';
-
+import Cart from './components/Cart';
 import './App.css';
+
 
 // This object will allow us to
 // easily convert numbers into US dollar values
@@ -39,34 +38,15 @@ class App extends Component {
   };
 
   updateFeature = (feature, newValue) => {
-    console.log('updateFeature called');
+    //console.log('updateFeature called');
     const selected = Object.assign({}, this.state.selected);
     selected[feature] = newValue;
     this.setState({
       selected
     });
   };
-  render() {
-    const summary = Object.keys(this.state.selected).map((feature, idx) => {
-      const featureHash = feature + '-' + idx;
-      const selectedOption = this.state.selected[feature];
-
-      return (
-        <CartItems
-          featureHash={featureHash}
-          feature={feature}
-          name={selectedOption.name}
-          USCurrency={USCurrencyFormat}
-          cost={selectedOption.cost}
-        />
-      );
-    });
-
-    const total = Object.keys(this.state.selected).reduce(
-      (acc, curr) => acc + this.state.selected[curr].cost,
-      0
-    );
-
+    
+  render(){
     //Main Form w/Customize Laptop
     return (
       <div className="App">
@@ -80,14 +60,11 @@ class App extends Component {
             currencyFormat={USCurrencyFormat}
             updateFeature={this.updateFeature}
           />
-          <section className="main__summary">
-            <h2>Your cart</h2>
-            {summary}
-            <div className="summary__total">
-              <div className="summary__total__label">Total</div>
-              <div className="summary__total__value">{USCurrencyFormat.format(total)}</div>
-            </div>
-          </section>
+          <Cart
+          currencyFormat={USCurrencyFormat}
+          state= {this.state}
+          total= {this.total} 
+          />
         </main>
       </div>
     );

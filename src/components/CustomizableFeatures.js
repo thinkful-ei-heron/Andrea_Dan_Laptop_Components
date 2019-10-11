@@ -2,8 +2,7 @@ import React from 'react';
 
 export default class CustomizableFeatures extends React.Component {
   render() {
-    console.log(this.props);
-    console.log('id is ' + this.props.itemHash);
+
     return (
       <div key={this.props.itemHash} className="feature__item">
         <input
@@ -12,7 +11,6 @@ export default class CustomizableFeatures extends React.Component {
           name={this.props.name}
           checked={this.props.checked}
           onChange={e => {
-            console.log('button pressed');
             this.props.updateFeature(this.props.feature, this.props.item);
           }}
         />
