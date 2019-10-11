@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import slugify from 'slugify';
 
 import CustomizeLaptop from './components/CustomizeLaptop';
+import Cart from './components/Cart';
 
 import './App.css';
 
@@ -44,26 +45,26 @@ class App extends Component {
       selected
     });
   };
+ render() {
+  const summary = Object.keys(this.state.selected).map((feature, idx) => {
+    const featureHash = feature + '-' + idx;
+    const selectedOption = this.state.selected[feature];
 
-  render() {
-    //Cart
-    const summary = Object.keys(this.state.selected).map((feature, idx) => {
-      const featureHash = feature + '-' + idx;
-      const selectedOption = this.state.selected[feature];
+    return (
+      <Cart 
+            featureHash={featureHash}
+            feature= {feature}
+            name={selectedOption.name}
+            USCurrency= {USCurrencyFormat}
+            cost= {selectedOption.cost}
 
-      return (
-        <div className="summary__option" key={featureHash}>
-          <div className="summary__option__label">{feature} </div>
-          <div className="summary__option__value">{selectedOption.name}</div>
-          <div className="summary__option__cost">{USCurrencyFormat.format(selectedOption.cost)}</div>
-        </div>
-      );
-    });
+            />
+    );
+  });
 
     const total = Object.keys(this.state.selected).reduce(
-      (acc, curr) => acc + this.state.selected[curr].cost,
-      0
-    );
+    (acc, curr) => acc + this.state.selected[curr].cost,0);
+
     //Main Form w/Customize Laptop
     return (
       <div className="App">
